@@ -1,0 +1,25 @@
+version : '3.7'
+
+services:
+    aws:
+        image: amazon/aws-cli:2.1.3
+        volumes:
+            - .:/code
+            - aws-creds:/root/.aws
+        restart: "no"
+        working_dir: /code
+        entrypoint: aws
+        environment:
+            AWS_PROFILE: terraform-operator
+
+    terraform:
+        image: hashicorp/terraform:0.14.3
+        volumes:
+            - .:/code
+            - aws-creds:/root/.aws
+        working_dir: /code
+        environment:
+            AWS_PROFILE: terraform-operator
+volumes:
+    aws-creds:
+        name: aws-creds
